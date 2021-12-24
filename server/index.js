@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", apiRouter);
 
 // set port, listen for requests
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8080;
 
 // db.sequelize.sync({force:true})
 // db.sequelize.authenticate().then(res => {
