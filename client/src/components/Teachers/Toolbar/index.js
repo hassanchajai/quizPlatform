@@ -25,7 +25,7 @@ import {
           variant="contained"
           onClick={()=>{props.handleOpen()}}
         >
-        <Add/>  Add Student
+        <Add/>  Add Teacher
         </Button>
       </Box>
       <Box sx={{ mt: 3 }}>
@@ -47,9 +47,8 @@ import {
                     </InputAdornment>
                   )
                 }}
-          onChange={e=>props.onchange(e)}
-
-                placeholder="Search Student"
+                onChange={e=>props.onchange(e)}
+                placeholder="Search Teacher"
                 variant="outlined"
               />
             </Box>

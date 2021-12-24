@@ -1,3 +1,4 @@
+const bcrypt=require("bcryptjs")
 module.exports = (sequelize, Sequelize) => {
     const User = sequelize.define("user", {
         name: {
@@ -10,7 +11,15 @@ module.exports = (sequelize, Sequelize) => {
         },
         password: {
             type: Sequelize.STRING,
-            required: true
+            required: true,
+             set(value) {
+                // console.log(value);
+                const salt =  bcrypt.genSaltSync(10);
+
+                let hashpwdpassword =  bcrypt.hashSync(value, salt);
+
+                this.setDataValue('password', hashpwdpassword);
+              }
         },
         birthday: Sequelize.DataTypes.DATE,
         image: Sequelize.DataTypes.STRING,

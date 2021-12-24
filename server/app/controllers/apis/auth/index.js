@@ -80,11 +80,8 @@ module.exports = {
                         message: "Email already used!",
                     });
                 }
-                const salt = await bcrypt.genSalt(10);
-
-                let hashpwdpassword = await bcrypt.hash(req.body.password, salt);
-
-                const UserModel = await db.user.create({...req.body,password:hashpwdpassword});
+             
+                const UserModel = await db.user.create(req.body);
                 // generate salt to hash password
                 // now we set user password to hashed password
                 return res.json({

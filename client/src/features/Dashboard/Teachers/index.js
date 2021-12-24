@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { CardWithTable, StudentTable, StudentToolbar, StudentModal } from '../../../components'
+import { CardWithTable, TeacherTable, TeacherToolbar, TeacherModal } from '../../../components'
 import { connect } from 'react-redux'
 import { CircularProgress } from '@mui/material'
 import { api } from '../../../helpers'
-import { add_student, delete_student, getall_students, update_student } from './store'
+import { add_teacher, delete_teacher, getall_teachers, update_teacher } from './store'
 const initialValue = {
     name: "",
     email: "",
     password: "",
     birthday: ""
 }
-const endpoint = "/students/"
-const filter = (name) => (item, i) => name === "" || item.name.includes(name)
-const Student = ({ students, getAll, addStudent, deleteStudent, UpdateStudent }) => {
+const endpoint = "/Teachers/"
+const filter = (name) => (item, i) => name === "" || item.name.toLowerCase().includes(name.toLowerCase())
+const Teacher = ({ teachers, getAll, addTeacher, deleteTeacher, UpdateTeacher }) => {
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const [selectedItem, setSelectedItem] = useState(initialValue)
@@ -37,24 +37,25 @@ const Student = ({ students, getAll, addStudent, deleteStudent, UpdateStudent })
     }
     const edit = async (values) => {
         await api.put(endpoint + values.id, { ...values }).then(res => {
-            alert("student updated succefuly")
-            UpdateStudent({selectedIndexItem,values})
+            alert("Teacher updated succefuly")
+            UpdateTeacher({selectedIndexItem,values})
         }).catch(err => {
             alert(err)
         })
     }
     const add = async (values) => {
         await api.post(endpoint, { ...values }).then(res => {
-            alert("student added succefuly")
-            addStudent(res.data)
+            alert("Teacher added succefuly")
+            // console.log(res.data);
+            addTeacher(res.data)
         }).catch(err => {
             alert("")
         })
     }
     const deleteStud = async (id) => {
         await api.delete(endpoint + id).then(res => {
-            alert("student deleted succefuly")
-            deleteStudent(id)
+            alert("Teacher deleted succefuly")
+            deleteTeacher(id)
             load()
         }).catch(err => {
             alert("")
@@ -65,6 +66,7 @@ const Student = ({ students, getAll, addStudent, deleteStudent, UpdateStudent })
         try {
             const res = await api.get(endpoint);
             const data = await res.data
+            // console.log(data);
             await getAll(data)
         } catch (err) {
             alert(err.response.data.message)
@@ -76,32 +78,32 @@ const Student = ({ students, getAll, addStudent, deleteStudent, UpdateStudent })
         load()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-    const renderStudentsContent = (<>
-        <StudentToolbar handleOpen={handleClickOpen} onchange={e=>{setName(e.target.value)}}/>
+    const renderTeachersContent = (<>
+        <TeacherToolbar handleOpen={handleClickOpen} onchange={e=>{setName(e.target.value)}}/>
         <CardWithTable>
-            <StudentTable rows={students ? students.filter(filter(name)) : []} handleOpenEditForm={handleOpenEditForm} deleteStud={deleteStud} />
+            <TeacherTable rows={teachers ? teachers.filter(filter(name)) : []} handleOpenEditForm={handleOpenEditForm} deleteStud={deleteStud} />
         </CardWithTable>
-        <StudentModal open={open} handleClose={handleClose} isEdit={isEdit} submit={isEdit ? edit : add} initialValue={selectedItem} />
+        <TeacherModal open={open} handleClose={handleClose} isEdit={isEdit} submit={isEdit ? edit : add} initialValue={selectedItem} />
     </>
     )
     return (
         <>
             <Helmet>
-                <title>Students</title>
+                <title>Teachers</title>
             </Helmet>
-            {loading ? <CircularProgress /> : renderStudentsContent}
+            {loading ? <CircularProgress /> : renderTeachersContent}
         </>
     )
 }
 const mapStateToProps = (state) => ({
-    ...state.students
+    ...state.teachers
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    getAll: (_) => dispatch(getall_students(_)),
-    addStudent: (_) => dispatch(add_student(_)),
-    UpdateStudent: (_) => dispatch(update_student(_)),
-    deleteStudent: (_) => dispatch(delete_student(_))
+    getAll: (_) => dispatch(getall_teachers(_)),
+    addTeacher: (_) => dispatch(add_teacher(_)),
+    UpdateTeacher: (_) => dispatch(update_teacher(_)),
+    deleteTeacher: (_) => dispatch(delete_teacher(_))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Student)
+export default connect(mapStateToProps, mapDispatchToProps)(Teacher)

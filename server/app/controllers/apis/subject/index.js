@@ -2,95 +2,81 @@ const db = require("../../../models");
 
 module.exports = {
     getAll: (req, res) => {
-        db.user.findAll({
-            where: {
-                role: 0
-            }
-        })
+        db.subject.findAll()
             .then(data => {
                 res.send(data);
             })
             .catch(err => {
                 res.status(500).send({
                     message:
-                        err.message || "Some error occurred while retrieving students."
+                        err.message || "Some error occurred while retrieving subjects."
                 });
             });
     },
     add: (req, res) => {
-        const { name, email, password, birthday } = req.body;
+        const { title, description, published } = req.body;
         const values = {
-            name,
-            email,
-            password,
-            birthday
+            title, description, published
         }
         // Save Tutorial in the database
-        db.user.create({ ...values, role: 0 })
+        db.subject.create({ ...values })
             .then(data => {
                 res.send(data);
             })
             .catch(err => {
                 res.status(500).send({
                     message:
-                        err.message || "Some error occurred while creating the Student."
+                        err.message || "Some error occurred while creating the subject."
                 });
             });
 
     },
     update: (req, res) => {
-        const { name, email, password, birthday } = req.body;
-        const id = req.params.id;
+        const { title, description, published } = req.body;
         const values = {
-            name,
-            email,
-            birthday,
-            role: 0
+            title, description, published
         }
-        if (password != "") {
-            values.password = password
-        }
-
-        db.user.update(values, {
+        const id = req.params.id;
+        db.subject.update(values, {
             where: { id: id }
         })
             .then(num => {
                 if (num == 1) {
                     res.send({
-                        message: "student was updated successfully."
+                        message: "subject was updated successfully."
                     });
                 } else {
                     res.send({
-                        message: `Cannot update student with id=${id}. Maybe student was not found or req.body is empty!`
+                        message: `Cannot update subject with id=${id}. Maybe subject was not found or req.body is empty!`
                     });
                 }
             })
             .catch(err => {
                 res.status(500).send({
-                    message: "Error updating student with id=" + id
+                    message: "Error updating subject with id=" + id
                 });
             });
 
     },
     delete: (req, res) => {
         const id = req.params.id;
-        db.user.destroy({
+        db.subject.destroy({
             where: { id: id }
         })
             .then(num => {
                 if (num == 1) {
                     res.send({
-                        message: "student was deleted successfully!"
+                        message: "subject was deleted successfully!"
                     });
                 } else {
                     res.send({
-                        message: `Cannot delete student with id=${id}. Maybe Tutorial was not found!`
+                        message: `Cannot delete subject with id=${id}. Maybe Tutorial was not found!`
                     });
                 }
             })
             .catch(err => {
                 res.status(500).send({
-                    message: "Could not delete student with id=" + id
+                    message: "Could not delete subject with id=" + id
                 });
             });
     }

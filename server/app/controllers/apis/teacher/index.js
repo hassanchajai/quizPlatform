@@ -4,7 +4,7 @@ module.exports = {
     getAll: (req, res) => {
         db.user.findAll({
             where: {
-                role: 0
+                role: 1
             }
         })
             .then(data => {
@@ -26,7 +26,7 @@ module.exports = {
             birthday
         }
         // Save Tutorial in the database
-        db.user.create({ ...values, role: 0 })
+        db.user.create({ ...values, role: 1 })
             .then(data => {
                 res.send(data);
             })
@@ -45,7 +45,7 @@ module.exports = {
             name,
             email,
             birthday,
-            role: 0
+            role: 1
         }
         if (password != "") {
             values.password = password

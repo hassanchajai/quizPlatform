@@ -8,10 +8,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import { List, ListItem, ListItemText, Menu, MenuItem } from '@mui/material';
+import { List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { AccountCircle } from '@mui/icons-material'
+import { AccountCircle, Person } from '@mui/icons-material'
 import { connect } from "react-redux"
 import { NavLink } from 'react-router-dom';
 
@@ -188,6 +188,18 @@ function PageDashboardLayout({ children, title, isAuth: auth }) {
                                 {/* <ListItemIcon>{route.icon}</ListItemIcon> */}
 
                                 <ListItemText primary={"Students"} />
+                            </ListItem>
+                            <ListItem
+                                button
+                                // key={}
+                                component={NavLink}
+                                to={"/teachers"}
+                                style={{ letterSpacing: "2px!important" }}
+                            >
+                                {/* <Icon /> */}
+                                <ListItemIcon><Person /></ListItemIcon>
+
+                                <ListItemText primary={"Teachers"} />
                             </ListItem>
 
                         </List>
