@@ -1,5 +1,5 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
+
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -17,7 +17,8 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { TableHead } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-
+import { Confirm } from '../..';
+import moment from 'moment'
 function TablePaginationActions(props) {
     const theme = useTheme();
     const { count, page, rowsPerPage, onPageChange } = props;
@@ -72,37 +73,11 @@ function TablePaginationActions(props) {
     );
 }
 
-TablePaginationActions.propTypes = {
-    count: PropTypes.number.isRequired,
-    onPageChange: PropTypes.func.isRequired,
-    page: PropTypes.number.isRequired,
-    rowsPerPage: PropTypes.number.isRequired,
-};
 
-function createData(name, calories, fat) {
-    return { name, calories, fat };
-}
-
-const rows = [
-    createData('Cupcake', 305, 3.7),
-    createData('Donut', 452, 25.0),
-    createData('Eclair', 262, 16.0),
-    createData('Frozen yoghurt', 159, 6.0),
-    createData('Gingerbread', 356, 16.0),
-    createData('Honeycomb', 408, 3.2),
-    createData('Ice cream sandwich', 237, 9.0),
-    createData('Jelly Bean', 375, 0.0),
-    createData('KitKat', 518, 26.0),
-    createData('Lollipop', 392, 0.2),
-    createData('Marshmallow', 318, 0),
-    createData('Nougat', 360, 19.0),
-    createData('Oreo', 437, 18.0),
-].sort((a, b) => (a.calories < b.calories ? -1 : 1));
-
-export default function TableStudent({handleOpenEditForm}) {
+export default function TableStudent({ handleOpenEditForm,rows }) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+    const [open, setOpen] = React.useState(false)
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -117,78 +92,88 @@ export default function TableStudent({handleOpenEditForm}) {
     };
 
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ }} aria-label="custom pagination table-hover">
-                <TableHead>
-                    <TableRow>
-                        <TableCell component="th" >
-                            Name
-                        </TableCell>
-                        <TableCell component="th" >
-                            Email
-                        </TableCell>
-                        <TableCell component="th" >
-                            Birthday
-                        </TableCell>
-                        <TableCell component="th" >
-                            Actions
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {(rowsPerPage > 0
-                        ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : rows
-                    ).map((row) => (
-                        <TableRow key={row.name}>
+        <>
+            <TableContainer component={Paper}>
+                <Table sx={{}} aria-label="custom pagination table-hover">
+                    <TableHead>
+                        <TableRow>
                             <TableCell component="th" >
-                                {row.name}
+                                Name
                             </TableCell>
-                            <TableCell  >
-                                {row.calories}
+                            <TableCell component="th" >
+                                Email
                             </TableCell>
-                            <TableCell>
-                                {row.fat}
+                            <TableCell component="th" >
+                                Age
                             </TableCell>
-                            <TableCell style={{display:"flex"}} >
-                                <IconButton onClick={()=>handleOpenEditForm(row)}>
-                                    <Edit color='warning' />
-                                </IconButton>
-                                <IconButton>
-                                    <Delete color="error"/>
-                                </IconButton>
+                            <TableCell component="th" >
+                                Actions
                             </TableCell>
                         </TableRow>
-                    ))}
+                    </TableHead>
+                    <TableBody>
+                        {(rowsPerPage > 0
+                            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            : rows
+                        ).map((row) => (
+                            <TableRow key={row.name}>
+                                <TableCell component="th" >
+                                    {row.name}
+                                </TableCell>
+                                <TableCell  >
+                                    {row.email}
+                                </TableCell>
+                                <TableCell>
+                                    { moment().diff(row.birthday, 'years') } year
+                                </TableCell>
+                                <TableCell style={{ display: "flex" }} >
+                                    <IconButton onClick={() => handleOpenEditForm(row)}>
+                                        <Edit color='warning' />
+                                    </IconButton>
+                                    <IconButton onClick={()=>{setOpen(prev=>!prev)}}>
+                                        <Delete color="error" />
+                                    </IconButton>
+                                </TableCell>
+                            </TableRow>
+                        ))}
 
-                    {emptyRows > 0 && (
-                        <TableRow style={{ height: 53 * emptyRows }}>
-                            <TableCell colSpan={6} />
+                        {emptyRows > 0 && (
+                            <TableRow style={{ height: 53 * emptyRows }}>
+                                <TableCell colSpan={6} />
+                            </TableRow>
+                        )}
+                    </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                colSpan={3}
+                                count={rows.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                SelectProps={{
+                                    inputProps: {
+                                        'aria-label': 'rows per page',
+                                    },
+                                    native: true,
+                                }}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                ActionsComponent={TablePaginationActions}
+                                style={{ minWidth: 500 }}
+                            />
                         </TableRow>
-                    )}
-                </TableBody>
-                <TableFooter>
-                    <TableRow>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                            colSpan={3}
-                            count={rows.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            SelectProps={{
-                                inputProps: {
-                                    'aria-label': 'rows per page',
-                                },
-                                native: true,
-                            }}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            ActionsComponent={TablePaginationActions}
-                            style={{minWidth:500}}
-                        />
-                    </TableRow>
-                </TableFooter>
-            </Table>
-        </TableContainer>
+                    </TableFooter>
+                </Table>
+            </TableContainer>
+            <Confirm
+                onConfirm={()=>{setOpen(prev=>!prev)}}
+                onCancel={()=>{setOpen(prev=>!prev)} }
+                open={open}
+                handleClose={()=>{setOpen(prev=>!prev)} }
+                title={"delete student"} >
+                are you want to delete this record ?
+            </Confirm>
+        </>
     );
 }

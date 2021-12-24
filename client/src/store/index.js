@@ -1,6 +1,7 @@
 import { combineReducers, createStore } from 'redux'
 import authReducer from '../features/Auth/store'
-const rootReducer = combineReducers({ auth: authReducer })
+import StudentReducer from '../features/Dashboard/Student/store'
+const rootReducer = combineReducers({ auth: authReducer,students:StudentReducer })
 
 export default function configureStore() {
     const store = createStore(

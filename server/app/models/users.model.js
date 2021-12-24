@@ -12,6 +12,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             required: true
         },
+        birthday: Sequelize.DataTypes.DATE,
         image: Sequelize.DataTypes.STRING,
         role: Sequelize.DataTypes.INTEGER
     }, {

@@ -8,11 +8,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import { Menu, MenuItem } from '@mui/material';
+import { List, ListItem, ListItemText, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { AccountCircle } from '@mui/icons-material'
 import { connect } from "react-redux"
+import { NavLink } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -63,7 +64,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function PageDashboardLayout({ children, title, isAuth: auth }) {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
     // const [auth, setAuth] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -161,7 +162,36 @@ function PageDashboardLayout({ children, title, isAuth: auth }) {
                         </IconButton>
                     </Toolbar>
                     <Divider />
+                    <Box sx={{ flexGrow: 1 }}>
+                        <List>
 
+                            <ListItem
+                                button
+                                // key={}
+                                component={NavLink}
+                                to={"/"}
+                                style={{ letterSpacing: "2px!important" }}
+                            >
+                                {/* <Icon /> */}
+                                {/* <ListItemIcon>{route.icon}</ListItemIcon> */}
+
+                                <ListItemText primary={"Dashboard"} />
+                            </ListItem>
+                            <ListItem
+                                button
+                                // key={}
+                                component={NavLink}
+                                to={"/students"}
+                                style={{ letterSpacing: "2px!important" }}
+                            >
+                                {/* <Icon /> */}
+                                {/* <ListItemIcon>{route.icon}</ListItemIcon> */}
+
+                                <ListItemText primary={"Students"} />
+                            </ListItem>
+
+                        </List>
+                    </Box>
                 </Drawer>
                 <Box
                     component="main"
@@ -176,7 +206,7 @@ function PageDashboardLayout({ children, title, isAuth: auth }) {
                     }}
                 >
                     <Toolbar />
-                    <Box   sx={{ mt: 4, mb: 4,mx:4 }}>
+                    <Box sx={{ mt: 4, mb: 4, mx: 4 }}>
                         {children}
                     </Box>
                 </Box>
