@@ -27,21 +27,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", apiRouter);
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3001;
 
 // db.sequelize.sync({force:true})
-// db.sequelize.authenticate().then(res => {
-//   app.listen(PORT, () => {
-//     console.log('Connection has been established successfully to MYSQL.');
-//     console.log(`Server is running on port ${PORT}.`);
-//   });
-// }).catch(err => {
-//   console.error('Unable to connect to the database:', err);
-// });
-app.listen(PORT, () => {
-  console.log('Connection has been established successfully to MYSQL.');
-  console.log(`Server is running on port ${PORT}.`);
+db.sequelize.authenticate().then(res => {
+  app.listen(PORT, () => {
+    console.log('Connection has been established successfully to MYSQL.');
+    console.log(`Server is running on port ${PORT}.`);
+  });
+}).catch(err => {
+  console.error('Unable to connect to the database:', err);
 });
+
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });

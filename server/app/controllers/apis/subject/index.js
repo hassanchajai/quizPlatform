@@ -70,7 +70,7 @@ module.exports = {
                     });
                 } else {
                     res.send({
-                        message: `Cannot delete subject with id=${id}. Maybe Tutorial was not found!`
+                        message: `Cannot delete subject with id=${id}. Maybe subject was not found!`
                     });
                 }
             })
