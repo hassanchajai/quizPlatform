@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import { List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { AccountCircle, Person } from '@mui/icons-material'
+import { AccountCircle, Analytics, Person, Storage } from '@mui/icons-material'
 import { connect } from "react-redux"
 import { NavLink } from 'react-router-dom';
 
@@ -174,6 +174,7 @@ function PageDashboardLayout({ children, title, isAuth: auth }) {
                             >
                                 {/* <Icon /> */}
                                 {/* <ListItemIcon>{route.icon}</ListItemIcon> */}
+                                <ListItemIcon><Analytics /></ListItemIcon>
 
                                 <ListItemText primary={"Dashboard"} />
                             </ListItem>
@@ -186,6 +187,7 @@ function PageDashboardLayout({ children, title, isAuth: auth }) {
                             >
                                 {/* <Icon /> */}
                                 {/* <ListItemIcon>{route.icon}</ListItemIcon> */}
+                                <ListItemIcon><Person /></ListItemIcon>
 
                                 <ListItemText primary={"Students"} />
                             </ListItem>
@@ -201,6 +203,19 @@ function PageDashboardLayout({ children, title, isAuth: auth }) {
 
                                 <ListItemText primary={"Teachers"} />
                             </ListItem>
+                            <ListItem
+                                button
+                                // key={}
+                                component={NavLink}
+                                to={"/subjects"}
+                                style={{ letterSpacing: "2px!important" }}
+                            >
+                                {/* <Icon /> */}
+                                <ListItemIcon><Storage /></ListItemIcon>
+
+                                <ListItemText primary={"Subjects"} />
+                            </ListItem>
+
 
                         </List>
                     </Box>

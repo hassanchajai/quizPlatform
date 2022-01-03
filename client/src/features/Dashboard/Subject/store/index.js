@@ -19,6 +19,7 @@ export default (state = initialState, { type, payload }) => {
     switch (type) {
         case GET_ALL_SUBJECTS:
             {
+                console.log(payload);
                 // console.log(payload);
                 return { ...state, subjects: payload }}
         case ADD_SUBJECT: {

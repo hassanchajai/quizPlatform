@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { CardWithTable, TeacherTable, TeacherToolbar, TeacherModal } from '../../../components'
+import { CardWithTable,SubjectTable,SubjectToolbar, SubjectModal } from '../../../components'
 import { connect } from 'react-redux'
 import { CircularProgress } from '@mui/material'
 import { api } from '../../../helpers'
 import { add, deletee, getall, update } from './store'
 const initialValue = {
-    title:"", description:"", published:""
+    title: "", description: "", published: "",parentId:null
 }
 const endpoint = "/subjects/"
-const filter = (name) => (item, i) => name === "" || item.name.toLowerCase().includes(name.toLowerCase())
-const Teacher = ({ subjects, getAll, addSubject, deleteSubject, UpdateSubject }) => {
+const filter = (title) => (item, i) => title === "" || item.title.toLowerCase().includes(title.toLowerCase())
+
+const Subject = ({ subjects, getAll, addSubject, deleteSubject, UpdateSubject }) => {
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const [selectedItem, setSelectedItem] = useState(initialValue)
@@ -25,7 +26,7 @@ const Teacher = ({ subjects, getAll, addSubject, deleteSubject, UpdateSubject })
     const handleClose = () => {
         setOpen(false);
     };
-    const handleOpenEditForm = (item,i) => {
+    const handleOpenEditForm = (item, i) => {
         console.log(i);
         setIsEdit(true)
         setSelectedItem({ ...item })
@@ -35,7 +36,7 @@ const Teacher = ({ subjects, getAll, addSubject, deleteSubject, UpdateSubject })
     const edit = async (values) => {
         await api.put(endpoint + values.id, { ...values }).then(res => {
             alert("Subject updated succefuly")
-            UpdateSubject({selectedIndexItem,values})
+            UpdateSubject({ selectedIndexItem, values })
         }).catch(err => {
             alert(err)
         })
@@ -75,12 +76,12 @@ const Teacher = ({ subjects, getAll, addSubject, deleteSubject, UpdateSubject })
         load()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-    const renderTeachersContent = (<>
-        <TeacherToolbar handleOpen={handleClickOpen} onchange={e=>{setName(e.target.value)}}/>
+    const renderSubjectsContent = (<>
+        <SubjectToolbar handleOpen={handleClickOpen} onchange={e => { setName(e.target.value) }} />
         <CardWithTable>
-            <TeacherTable rows={subjects ? subjects.filter(filter(name)) : []} handleOpenEditForm={handleOpenEditForm} deleteStud={deleteStud} />
+            <SubjectTable rows={subjects ? subjects.filter(filter(name)) : []} handleOpenEditForm={handleOpenEditForm} deleteStud={deleteStud} />
         </CardWithTable>
-        <TeacherModal open={open} handleClose={handleClose} isEdit={isEdit} submit={isEdit ? edit : add} initialValue={selectedItem} />
+        <SubjectModal parents={subjects ? subjects : []} open={open} handleClose={handleClose} isEdit={isEdit} submit={isEdit ? edit : add} initialValue={selectedItem} />
     </>
     )
     return (
@@ -88,7 +89,7 @@ const Teacher = ({ subjects, getAll, addSubject, deleteSubject, UpdateSubject })
             <Helmet>
                 <title>Subjects</title>
             </Helmet>
-            {loading ? <CircularProgress /> : renderTeachersContent}
+            {loading ? <CircularProgress /> : renderSubjectsContent}
         </>
     )
 }
@@ -103,4 +104,4 @@ const mapDispatchToProps = (dispatch) => ({
     deleteSubject: (_) => dispatch(deletee(_))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Teacher)
+export default connect(mapStateToProps, mapDispatchToProps)(Subject)

@@ -6,6 +6,7 @@ import PageDashboardLayout from '../features/Dashboard/layouts/PageDashbaordLayo
 import Home from '../features/Dashboard/Home';
 import Student from '../features/Dashboard/Student';
 import Teachers from '../features/Dashboard/Teachers';
+import Subject from '../features/Dashboard/Subject';
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => useRoutes([
   // These are the same as the props you provide to <Route>
@@ -13,5 +14,6 @@ export default () => useRoutes([
   { path: "/auth", element: <Auth /> },
   { path: "/", element: <PageDashboardLayout title="Dashboard"><Home/></PageDashboardLayout> },
   { path: "/students", element: <PageDashboardLayout title="Students"><Student/></PageDashboardLayout> },
-  { path: "/teachers", element: <PageDashboardLayout title="Students"><Teachers/></PageDashboardLayout> },
+  { path: "/teachers", element: <PageDashboardLayout title="Teachers"><Teachers/></PageDashboardLayout> },
+  { path: "/subjects", element: <PageDashboardLayout title="Subjects"><Subject/></PageDashboardLayout> },
 ]);

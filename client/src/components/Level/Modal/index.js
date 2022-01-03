@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import { CircularProgress, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-// import moment from 'moment';
 const useStyles = makeStyles(() => ({
     input: {
         width: 100 + "%",
@@ -32,12 +31,12 @@ export default function Modal({ open, handleClose, isEdit, submit, initialValue 
 
     return (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>{text} Teacher</DialogTitle>
+            <DialogTitle>{text} Student</DialogTitle>
             <DialogContent>
                 <TextField id="standard-basic" name="name" value={values.name} onChange={handleOnChange} label="Name" variant="standard" className={styles.input} />
                 <TextField id="standard-basic" name="email" value={values.email} label="Email" onChange={handleOnChange} variant="standard" className={styles.input} />
                 <TextField id="standard-basic" name="password" value={values.password} label="Password" onChange={handleOnChange} variant="standard" className={styles.input} />
-                <TextField id="standard-basic" name="birthday" value={values.birthday} type={"date"} onChange={handleOnChange} defaultValue={`${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`} label="Birthday" variant="standard" className={styles.input} />
+                <TextField id="standard-basic" name="birthday" type={"date"} onChange={handleOnChange} defaultValue={`${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`} f label="Birthday" variant="standard" className={styles.input} />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>

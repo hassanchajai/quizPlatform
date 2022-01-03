@@ -15,7 +15,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { Button, TableHead } from '@mui/material';
+import { TableHead } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import { Confirm } from '../..';
 import moment from 'moment'
@@ -99,19 +99,13 @@ export default function TableStudent({ handleOpenEditForm,rows,deleteStud }) {
                     <TableHead>
                         <TableRow>
                             <TableCell component="th" >
-                                Title
+                                Name
                             </TableCell>
                             <TableCell component="th" >
-                                Description
+                                Email
                             </TableCell>
                             <TableCell component="th" >
-                                Parent
-                            </TableCell>
-                            <TableCell component="th" >
-                                Active
-                            </TableCell>
-                            <TableCell component="th" >
-                                Created at
+                                Age
                             </TableCell>
                             <TableCell component="th" >
                                 Actions
@@ -125,21 +119,15 @@ export default function TableStudent({ handleOpenEditForm,rows,deleteStud }) {
                         ).map((row,i) => (
                             <TableRow key={row.name}>
                                 <TableCell component="th" >
-                                    {row.title}
+                                    {row.name}
                                 </TableCell>
                                 <TableCell  >
-                                    {row.description}
+                                    {row.email}
                                 </TableCell>
                                 <TableCell>
-                                    { row.parent ? row.parent.title : "has not parent"} 
+                                    { moment().diff(row.birthday, 'years') } year
                                 </TableCell>
-                                <TableCell>
-                                    { (row.published &&( <div  color="success" disabled variant="contained">Active</div>) )|| (<div color="danger" variant='contained' disabled>Inactive</div>)  } 
-                                </TableCell>
-                                <TableCell>
-                                    { moment(row.createdAt).fromNow()} year
-                                </TableCell>
-                                <TableCell style={{ display: "flex",padding:25 }} >
+                                <TableCell style={{ display: "flex" }} >
                                     <IconButton onClick={() => handleOpenEditForm(row,i)}>
                                         <Edit color='warning' />
                                     </IconButton>

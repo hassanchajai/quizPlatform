@@ -5,11 +5,12 @@ import { connect } from 'react-redux'
 import { CircularProgress } from '@mui/material'
 import { api } from '../../../helpers'
 import { add_teacher, delete_teacher, getall_teachers, update_teacher } from './store'
+import moment from 'moment'
 const initialValue = {
     name: "",
     email: "",
     password: "",
-    birthday: ""
+    birthday:  moment(new Date()).format("yyyy-MM-DD")
 }
 const endpoint = "/Teachers/"
 const filter = (name) => (item, i) => name === "" || item.name.toLowerCase().includes(name.toLowerCase())
@@ -28,17 +29,17 @@ const Teacher = ({ teachers, getAll, addTeacher, deleteTeacher, UpdateTeacher })
     const handleClose = () => {
         setOpen(false);
     };
-    const handleOpenEditForm = (item,i) => {
+    const handleOpenEditForm = (item, i) => {
         console.log(i);
         setIsEdit(true)
-        setSelectedItem({ ...item, password: "" })
+        setSelectedItem({ ...item, birthday: moment(item.birthday).format("yyyy-MM-DD"), password: "" })
         setselectedIndexItem(i)
         setOpen(prev => !prev)
     }
     const edit = async (values) => {
         await api.put(endpoint + values.id, { ...values }).then(res => {
             alert("Teacher updated succefuly")
-            UpdateTeacher({selectedIndexItem,values})
+            UpdateTeacher({ selectedIndexItem, values })
         }).catch(err => {
             alert(err)
         })
@@ -79,7 +80,7 @@ const Teacher = ({ teachers, getAll, addTeacher, deleteTeacher, UpdateTeacher })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     const renderTeachersContent = (<>
-        <TeacherToolbar handleOpen={handleClickOpen} onchange={e=>{setName(e.target.value)}}/>
+        <TeacherToolbar handleOpen={handleClickOpen} onchange={e => { setName(e.target.value) }} />
         <CardWithTable>
             <TeacherTable rows={teachers ? teachers.filter(filter(name)) : []} handleOpenEditForm={handleOpenEditForm} deleteStud={deleteStud} />
         </CardWithTable>
